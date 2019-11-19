@@ -1,9 +1,5 @@
-#! /bin/bash
+#! /bin/zsh
 
-# run the script like this:
-# $ chmod +x ./path/to/top
-# $ ./path/to/top 10 ./path/to/log.txt
-
-# here comes your solution
-# e.g.
-cut -d' ' -f1 $2 | head -$1 | cat -n
+total=$(cut -d '"'  -f1,3 $2 | cut -d ' ' -f1,8 | grep -v ' -' | awk '{arr[$1]+=$2} END {for (i in arr) {print i,arr[i]}}' | sort -n -k 2 -r | head -$1 | awk '{ sum+=$2 } END {print sum}')
+res=$(cut -d '"'  -f1,3 $2 | cut -d ' ' -f1,8 | grep -v ' -' | awk '{arr[$1]+=$2} END {for (i in arr) {print i,arr[i]}}' | sort -n -k 2 -r | head -$1 | awk '{ printf(NR ". %s - %d - %.1f%%\n",$1, $2, $2 / '"$total"' * 100)}')
+echo "$res"
